@@ -1,12 +1,11 @@
 const express = require("express");
 require("dotenv").config();
-const cors = require("cors");
+
 const router = express();
 const puppeteer = require("puppeteer");
 
 router.get(
   ["/api/1/puppeteer/", "/api/1/puppeteer/:page?"],
-  cors(),
   async (req, res) => {
     const whichView = {
       mobile: {
@@ -31,10 +30,6 @@ router.get(
       },
     };
 
-    if (
-      req.headers.origin.endsWith("ngrok.io") ||
-      req.headers.origin.endsWith("monday.com")
-    ) {
       res.setHeader("Access-Control-Allow-Origin", req.headers.origin);
 
       const browser = await puppeteer.launch();
@@ -58,7 +53,7 @@ router.get(
       } catch (error) {
         console.log(error);
       }
-    }
+    
   }
 );
 
