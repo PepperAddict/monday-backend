@@ -29,33 +29,37 @@ router.get(
         height: 800,
       },
     };
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "GET");
+    res.setHeader(
+      "Access-Control-Allow-Headers",
+      "X-Requested-With,content-type"
+    );
+    res.setHeader("Access-Control-Allow-Credentials", true);
 
-      res.setHeader("Access-Control-Allow-Origin", "*");
+    const browser = await puppeteer.launch({
+      args: ["no-sandbox"],
+    });
 
-      const browser = await puppeteer.launch({
-        args: ['no-sandbox']
+    try {
+      const page = await browser.newPage();
+
+      await page.setViewport(whichView[req.query.mode || "desktop"]);
+      await page.goto(req.query.url, {
+        waitUntil: "networkidle2",
+        timeout: 60000,
       });
 
-      try {
-        const page = await browser.newPage();
-
-        await page.setViewport(whichView[req.query.mode || 'desktop']);
-        await page.goto(req.query.url, {
-          waitUntil: "networkidle2",
-          timeout: 60000
-        });
-
-        const image = await page.screenshot({
-          type: "png",
-          fullPage: (req.query.full) === "yes" ? true: false,
-        });
-        await browser.close();
-        res.set("Content-Type", "image/png");
-        res.send(image);
-      } catch (error) {
-        console.log(error);
-      }
-    
+      const image = await page.screenshot({
+        type: "png",
+        fullPage: req.query.full === "yes" ? true : false,
+      });
+      await browser.close();
+      res.set("Content-Type", "image/png");
+      res.send(image);
+    } catch (error) {
+      console.log(error);
+    }
   }
 );
 
