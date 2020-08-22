@@ -38,7 +38,7 @@ router.get(
     res.setHeader("Access-Control-Allow-Credentials", true);
 
     const browser = await puppeteer.launch({
-      args: ["no-sandbox", "--disable-setuid-sandbox"],
+      args: ["-no-sandbox", "--disable-setuid-sandbox"],
     });
 
     try {
