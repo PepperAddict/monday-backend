@@ -30,9 +30,11 @@ router.get(
       },
     };
 
-      res.setHeader("Access-Control-Allow-Origin", req.headers.origin);
+      res.setHeader("Access-Control-Allow-Origin", "*");
 
-      const browser = await puppeteer.launch();
+      const browser = await puppeteer.launch({
+        args: ['no-sandbox']
+      });
 
       try {
         const page = await browser.newPage();
