@@ -5,7 +5,7 @@
   "author": "<jenearly@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node server/index.js"
+    "start": "yarn && node server/index.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
