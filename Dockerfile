@@ -1,8 +1,10 @@
-FROM node:latest
-
-WORKDIR /
+FROM node:10-apline
+RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
+WORKDIR /home/node/app
 COPY package*.json ./
+USER node
 RUN npm install
+COPY --chown=node:node . .
 
 # We need wget to set up the PPA and xvfb to have a virtual screen and unzip to install the Chromedriver
 RUN apt-get install -y wget xvfb unzip
